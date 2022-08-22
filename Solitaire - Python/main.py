@@ -143,9 +143,11 @@ class MyGame(arcade.Window):
                 card.position = start_x, bottom_y
                 self.card_list.append(card)
 
-        for pos1 in range(len(self.card_list)):  # amesteca cartile
-            pos2 = random.randrange(len(self.card_list))
-            self.card_list[pos1], self.card_list[pos2] = self.card_list[pos2], self.card_list[pos1]
+        #for pos1 in range(len(self.card_list)):  # amesteca cartile
+            #pos2 = random.randrange(len(self.card_list))
+            #self.card_list.swap(pos1,pos2)
+            #self.card_list[pos1], self.card_list[pos2] = self.card_list[pos2], self.card_list[pos1]
+        self.card_list.shuffle()
 
         self.piles = [[] for _ in range(pile_count)]  # lista de liste care tine cate un pachet de carti
 
@@ -171,14 +173,19 @@ class MyGame(arcade.Window):
         self.card_list.draw()
         if len(self.piles[top_pile_1]) == 13 and len(self.piles[top_pile_2]) == 13 and len(self.piles[top_pile_3]) == \
                 13 and len(self.piles[top_pile_4]) == 13:
-            arcade.draw_text("BRAVO, AI CASTIGAT!",
-                             200, 300, arcade.color.BLACK, 50)
+            arcade.draw_text("BRAVO, AI CASTIGAT!",200, 300, arcade.color.BLACK, 50)
 
+    #def pull_to_top(self, card):
+        #  index = self.card_list.index(card)
+            #  for i in range(index, len(self.card_list) - 1):  # ia toate celelalte carti de jos pana la sfarsit
+        #  self.card_list[i] = self.card_list[i + 1]
+    #  self.card_list[len(self.card_list) - 1] = card  # pune cartea asta ultima"""
     def pull_to_top(self, card):
-        index = self.card_list.index(card)
-        for i in range(index, len(self.card_list) - 1):  # ia toate celelalte carti de jos pana la sfarsit
-            self.card_list[i] = self.card_list[i + 1]
-        self.card_list[len(self.card_list) - 1] = card  # pune cartea asta ultima
+            """ Pull card to top of rendering order (last to render, looks on-top) """
+        # Pop from list
+            self.card_list.pop(self.card_list.index(card))
+        # Add to the end of the list
+            self.card_list.append(card)
 
     def on_key_press(self, symbol: int, modifiers: int):
         if symbol == arcade.key.R:
